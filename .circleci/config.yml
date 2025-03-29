@@ -3,19 +3,14 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: '********** CHANGE ME 1 **********'
+      - image: sonarsource/sonar-scanner-cli:latest  # Using SonarQube Docker image
     steps:
       - checkout
+      
       - run:
-          name: Install dependencies and build project
-          command: ********** CHANGE ME 2 **********
-      - sonarcloud/scan
-
-orbs:
-  sonarcloud: sonarsource/sonarcloud@2.0.0
-
-workflows:
-  main:
-    jobs:
-      - build:
-          context: SonarCloud
+          name: Run SonarQube Analysis
+          command: |
+            sonar-scanner \
+              -Dsonar.projectKey=my-project-key \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=$SONAR_TOKEN
