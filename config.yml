@@ -1,17 +1,1 @@
-version: 2.1
-jobs:
-  build:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Run Jenkins File"
-          command: echo "Running Jenkinsfile"
-      - run:
-          name: "Docker Build"
-          command: echo "Building Docker Image"
-workflows:
-  build_and_push:
-    jobs:
-      - build
+Deleted incorrect config.yml
