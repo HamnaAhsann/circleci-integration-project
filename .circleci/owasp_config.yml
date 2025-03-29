@@ -1,0 +1,21 @@
+version: 2.1
+
+jobs:
+  dependency-check:
+    docker:
+      - image: owasp/dependency-check
+    steps:
+      - checkout
+      - run:
+          name: Run Dependency-Check
+          command: >
+            dependency-check.sh --scan . --format HTML --out reports/
+      - store_artifacts:
+          path: reports/
+          destination: dependency-report
+
+workflows:
+  version: 2
+  scan:
+    jobs:
+      - dependency-check
