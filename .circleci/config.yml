@@ -1,36 +1,17 @@
 version: 2.1
+
 jobs:
   build:
     docker:
-      - image: cimg/base:stable
+      - image: sonarsource/sonar-scanner-cli:latest  # Docker image with Sonar Scanner
     steps:
       - checkout
       
-      # Install Dependencies
       - run:
-          name: Install Dependencies
-          command: |
-            sudo apt-get update && sudo apt-get install -y openjdk-11-jre
-            wget -q -O sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.6.2.2472-linux.zip
-            unzip sonar-scanner-cli.zip -d $HOME
-            export PATH=$PATH:$HOME/sonar-scanner-4.6.2.2472-linux/bin
-
-      # Run SonarQube Analysis
-      - run:
-          name: SonarQube Analysis
+          name: Run SonarQube Analysis
           command: |
             sonar-scanner \
-              -Dsonar.projectKey=circleci-integration-project \
-              -Dsonar.organization=your-org-name \
+              -Dsonar.projectKey=your-project-key \
               -Dsonar.host.url=https://sonarcloud.io \
               -Dsonar.login=$SONAR_TOKEN
 
-      # Save Results
-      - store_artifacts:
-          path: sonar-report
-          destination: sonar-report
-
-workflows:
-  sonar_pipeline:
-    jobs:
-      - build
